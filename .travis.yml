@@ -1,0 +1,30 @@
+language: c
+
+compiler: gcc
+
+branches:
+  only:
+    - travis
+
+env:
+
+matrix:
+
+before_install:
+ - sudo apt-get update
+ - sudo apt-get install gcc g++ sed patch coreutils tar bzip2 gzip perl flex bison coreutils gawk cpio texinfo gettext diff lzma libtool git autoconf
+ - sudo ln -sfn bash /bin/sh
+
+before_script:
+ - sed 's% \\033]2;\$@\\007 %%' -i config/functions
+ - sed 's%CONFIG_OPT_VERBOSE=.*%CONFIG_OPT_VERBOSE=n%' -i config/defconfigs/base-imx6-cuboxi.conf
+ - make base-imx6-cuboxi_defconfig
+
+script:
+  - make
+
+notification:
+  email: false
+
+git:
+  depth: 1
